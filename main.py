@@ -68,7 +68,7 @@ class Example(QMainWindow, Ui_Form):
         if '/0' in d:
             self.table.display('error')
         else:
-            self.table.display(eval(d + self.t))
+            self.table.display(eval(d))
 
     def sqrt(self):
         d = ''
