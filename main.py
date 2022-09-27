@@ -64,7 +64,11 @@ class Example(QMainWindow, Ui_Form):
             if t == '^':
                 t = '**'
             d += t
-        self.table.display(eval(d + self.t))
+        d = d + self.t
+        if '/0' in d:
+            self.table.display('error')
+        else:
+            self.table.display(eval(d + self.t))
 
     def sqrt(self):
         d = ''
