@@ -1,32 +1,34 @@
 import sys
 
 from PyQt5.QtWidgets import QApplication, QMainWindow
-from test import Ui_Form
-from random import randint
+from qt1 import Ui_Form
 import os
+d = '1234567890'
 
 
 class Example(QMainWindow, Ui_Form):
     def __init__(self):
         super().__init__()
         self.setupUi(self)
-
         self.pushButton.clicked.connect(self.run)
 
     def run(self):
-        with open('lines.txt', 'r') as f:
-            lines = f.readlines()
-            a = len(lines)
-            if os.stat("lines.txt").st_size == 0:
-                pass
-            else:
-                b = randint(0, a - 1)
-                f.seek(0)
-                for number, line in enumerate(f):
-                    if b == number:
-                        self.lineEdit.setText(line)
-                        break
-        f.close()
+        if os.path.exists(self.lineEdit.text()):
+            try:
+                f = open(self.lineEdit.text(), mode="r").read().split()
+                f = [int(item) for item in f]
+                f1 = open("output.txt", mode="w")
+                f1.write('Максимальное: ' + str(max(f)) + '\n')
+                f1.write('Минимальное: ' + str(min(f)) + '\n')
+                f1.write('Среднее: ' + str(sum(f) / len(f)) + '\n')
+                self.spinBox.setValue(max(f))
+                self.spinBox_2.setValue(min(f))
+                self.doubleSpinBox.setValue(sum(f) / len(f))
+            except Exception:
+                self.label_5.setText(f'В файле {self.lineEdit.text()} содержатся некорректные данные')
+
+        else:
+            self.label_5.setText(f'Файл {self.lineEdit.text()} не найден')
 
 
 if __name__ == '__main__':
